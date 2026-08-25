@@ -7,7 +7,7 @@ namespace DatingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MemberController(AppDbContext context) : Controller
+    public class MembersController(AppDbContext context) : Controller
     {
         [HttpGet]
         public async Task<ActionResult<List<AppUser>>> GetAllUsers()
