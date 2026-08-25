@@ -6,19 +6,19 @@ import { lastValueFrom } from 'rxjs';
   selector: 'app-root',
   imports: [],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
-export class App implements OnInit{
+export class App implements OnInit {
   private http = inject(HttpClient);
   protected readonly title = signal('Dating app');
-  protected members = signal<any>([])
+  protected members = signal<any>([]);
 
   async ngOnInit() {
-    this.members.set(await this.getMembers())
+    this.members.set(await this.getMembers());
   }
 
   async getMembers() {
-    try{
+    try {
       return lastValueFrom(this.http.get('https://localhost:7216/api/members'));
     } catch (error) {
       console.log(error);
