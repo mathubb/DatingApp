@@ -13,7 +13,7 @@ namespace DatingApp
             {
                 options.AddPolicy("MyCors", builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200")
+                    builder.WithOrigins("https://localhost:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader();
                 });
