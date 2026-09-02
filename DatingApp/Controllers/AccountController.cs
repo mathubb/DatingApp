@@ -1,6 +1,7 @@
 ﻿using DatingApp.Data;
 using DatingApp.DTOs;
 using DatingApp.Entities;
+using DatingApp.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace DatingApp.Controllers
 {
-    public class AccountController(AppDbContext context) : BaseApiController
+    public class AccountController(AppDbContext context, ITokenService tokenservice) : BaseApiController
     {
         [HttpPost("register")]
         public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
@@ -30,7 +31,7 @@ namespace DatingApp.Controllers
             return user;
         }
         [HttpPost("login")]
-        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await context.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
 
@@ -44,7 +45,13 @@ namespace DatingApp.Controllers
                 if (computedHash[i] != user.PasswordHash[i]) 
                     return Unauthorized("Invalid Password.");
 
-            return user;
+            return new UserDto
+            {
+                Id = user.Id,
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                Token = tokenservice.CreateToken(user)
+            };
         }
 
         private async Task<bool> EmailExists(string email)

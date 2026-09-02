@@ -1,5 +1,10 @@
 using DatingApp.Data;
+using DatingApp.Interfaces;
+using DatingApp.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DatingApp
 {
@@ -9,6 +14,19 @@ namespace DatingApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    var tokenKey = builder.Configuration["TokenKey"]
+                        ?? throw new Exception("Your token not found - program.cs");
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey)),
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true
+                    };
+                });
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("MyCors", builder =>
@@ -40,14 +58,10 @@ namespace DatingApp
                 });
             }
             app.UseCors("MyCors");
-
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
-            
             app.MapControllers();
-
             app.Run();
         }
     }
