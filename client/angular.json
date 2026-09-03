@@ -11,6 +11,9 @@
             "schematics": {
                 "@schematics/angular:component": {
                     "path": "src"
+                },
+                "@schematics/angular:service": {
+                    "path": "src/core/services"
                 }
             },
             "root": "",
