@@ -9,14 +9,22 @@ import { AccountService } from '../../core/services/account-service';
     templateUrl: './nav.html',
 })
 export class Nav {
-    private account = inject(AccountService)
-    protected creds: any = {}
-    protected loggedIn = signal(false)
+    private account = inject(AccountService);
+    protected creds: any = {};
+    protected loggedIn = signal(false);
 
     login() {
         this.account.login(this.creds).subscribe({
-            next: result => console.log(result),
-            error: err => alert(err)
-        })
+            next: (result) => {
+                console.log(result);
+                this.loggedIn.set(true);
+                this.creds = {};
+            },
+            error: (err) => alert(err),
+        });
+    }
+
+    logout() {
+        this.loggedIn.set(false);
     }
 }
