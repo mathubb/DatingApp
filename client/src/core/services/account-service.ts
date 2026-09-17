@@ -5,32 +5,34 @@ import { tap } from 'rxjs';
 
 @Service()
 export class AccountService {
-    private http = inject(HttpClient)
+    private http = inject(HttpClient);
     currentUser = signal<User | null>(null);
 
     baseUrl = 'https://localhost:7216/api/';
 
     register(creds: RegisterCreds) {
-        return this.http.post<User>(this.baseUrl + 'account/register', creds).pipe(
-            tap(user => {
-                if (user) {
-                    this.setCurrentUser(user);
-                }
-            })
-        )
+        return this.http
+            .post<User>(this.baseUrl + 'account/register', creds)
+            .pipe(
+                tap((user) => {
+                    if (user) {
+                        this.setCurrentUser(user);
+                    }
+                }),
+            );
     }
 
     login(creds: LoginCreds) {
         return this.http.post<User>(this.baseUrl + 'account/login', creds).pipe(
-            tap(user => {
+            tap((user) => {
                 if (user) {
                     this.setCurrentUser(user);
                 }
-            })
-        )
+            }),
+        );
     }
 
-    setCurrentUser(user: User){
+    setCurrentUser(user: User) {
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUser.set(user);
     }
