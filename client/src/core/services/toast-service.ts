@@ -41,4 +41,8 @@ export class ToastService {
             }
         }, duration);
     }
+
+    succes(message: string, duration?: number) {
+        this.createToastElement(message, 'alert-succes', duration);
+    }
 }
