@@ -12,24 +12,24 @@ import { ToastService } from '../../core/services/toast-service';
 })
 export class Nav {
     protected accountService = inject(AccountService);
-    private router = inject(Router)
-    private toast = inject(ToastService)
+    private router = inject(Router);
+    private toast = inject(ToastService);
     protected creds: any = {};
 
     login() {
         this.accountService.login(this.creds).subscribe({
             next: (result) => {
                 this.router.navigateByUrl('/members');
-                this.toast.succes('Logged in succesfully.')
+                this.toast.succes('Logged in succesfully.');
                 this.creds = {};
             },
             error: (err) => {
                 console.log(err);
-                this.toast.error(err.error)
-            }
+                this.toast.error(err.error);
+            },
         });
     }
-    
+
     logout() {
         this.accountService.logout();
         this.router.navigateByUrl('/');
