@@ -1,5 +1,6 @@
 using DatingApp.Data;
 using DatingApp.Interfaces;
+using DatingApp.Middleware;
 using DatingApp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,7 @@ namespace DatingApp
 
             var app = builder.Build();
 
+            app.UseMiddleware<ExceptionMiddleware>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();

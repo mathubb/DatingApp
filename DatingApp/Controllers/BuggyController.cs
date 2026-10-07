@@ -2,11 +2,29 @@
 
 namespace DatingApp.Controllers
 {
-    public class BuggyController : Controller
+    public class BuggyController : BaseApiController
     {
-        public IActionResult Index()
+        [HttpGet("auth")]
+        public IActionResult GetAut()
         {
-            return View();
+            return Unauthorized();
         }
+
+        [HttpGet("not-found")]
+        public IActionResult GetNotFound()
+        {
+            return NotFound();
+        }
+
+        [HttpGet("server-error")]
+        public IActionResult GetServerError()
+        {
+            throw new Exception("This is a server error");
+        }
+        [HttpGet("bad-request")]
+        public IActionResult GetBadRequest()
+        {
+            return BadRequest("This was a bad request");
+        }    
     }
 }
