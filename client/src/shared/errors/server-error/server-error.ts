@@ -9,12 +9,17 @@ import { ApiError } from '../../../types/error';
     templateUrl: './server-error.html',
 })
 export class ServerError {
-    protected error = signal<ApiError | null>(null);
+    protected error: ApiError;
     private router = inject(Router)
+    protected showDetails = false;
 
     constructor() {
         const navigation = this.router.currentNavigation();
         this.error = navigation?.extras?.state?.['error']
 
+    }
+
+    detailsToggle() {
+        this.showDetails =!this.showDetails;
     }
 }
