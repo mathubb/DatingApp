@@ -1,29 +1,32 @@
-﻿using DatingApp.Data;
-using DatingApp.Entities;
+﻿using DatingApp.Entities;
+using DatingApp.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.Controllers
 {
-    public class MembersController(AppDbContext context) : BaseApiController
+    [Authorize]
+    public class MembersController(IMemberRepository memberRepository) : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<List<AppUser>>> GetAllUsers()
+        public async Task<ActionResult<IReadOnlyList<Member>>> GetAllUsers()
         {
-            var members = await context.Users.ToListAsync();
-
-            return members;
+            return Ok(await memberRepository.GetMembersAsync());
         }
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppUser>> GetUserById(string id)
+        public async Task<ActionResult<Member>> GetUserById(string id)
         {
-            var member = await context.Users.FindAsync(id);
+            var member = await memberRepository.GetMemberAsync(id);
             if ( member != null)
                 return member;
             else
                 return NotFound();
+        }
+        [HttpGet("{id}/photos")]
+        public async Task<ActionResult<IReadOnlyList<Photo>>> GetMemberPhotos(string id)
+        {
+            return Ok(await memberRepository.GetPhotosForMemberAsync(id));
         }
     }
 }
