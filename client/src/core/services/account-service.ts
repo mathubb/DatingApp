@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Service, signal } from '@angular/core';
 import { LoginCreds, RegisterCreds, User } from '../../types/user';
 import { tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Service()
 export class AccountService {
     private http = inject(HttpClient);
-    currentUser = signal<User | null>(null);
-
-    baseUrl = 'https://localhost:7216/api/';
+    currentUser = signal<User | null>(JSON.parse(localStorage.getItem('user') || 'null'));
+    baseUrl = environment.apiUrl;
 
     register(creds: RegisterCreds) {
         return this.http
