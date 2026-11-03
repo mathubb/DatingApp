@@ -25,8 +25,11 @@ namespace DatingApp
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey)),
-                        ValidateIssuerSigningKey = false,
-                        ValidateIssuer = false
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true,
+                        ValidIssuer = "DatingApp",
+                        ValidateAudience = true,
+                        ValidAudience = "DatingUsers"
                     };
                 });
             builder.Services.AddCors(options =>

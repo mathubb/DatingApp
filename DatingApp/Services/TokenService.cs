@@ -28,7 +28,9 @@ namespace DatingApp.Services
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = creds
+                SigningCredentials = creds,
+                Issuer = "DatingApp",
+                Audience = "DatingUsers"
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
