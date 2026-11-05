@@ -1,12 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MemberService } from '../../../core/services/member-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Member } from '../../../types/member';
 
 @Component({
-    imports: [AsyncPipe],
+    imports: [AsyncPipe, RouterLink, RouterLinkActive],
     selector: 'app-member-detailed',
     styleUrl: './member-detailed.css',
     templateUrl: './member-detailed.html',
